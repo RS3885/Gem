@@ -1,0 +1,1371 @@
+<html>
+<head>
+<meta name="GENERATOR" content="Microsoft FrontPage 5.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<META name=keywords content="" >
+<META name=Description content="." >
+
+
+
+<title>Gematria Calculator</title>
+</head>
+<body>
+<script  language=jscript>
+
+</script>
+
+
+<script type="text/vbscript">
+
+'dim pM()  ' the plus minus total array
+
+
+function doNumbers(n)
+
+dim zI
+
+if n=2 then
+	Dim TheForm
+	Set TheForm = Document.enterScrip 
+	zI = TheForm.gem.Value
+else
+	zI = InputBox("Enter number for analysis", "Number analyzer")
+end if
+
+'zI = InputBox("Enter number for analysis", "Number analyzer")
+
+
+if Not IsNumeric(zI) then
+	msgbox("Requires a valid number")	
+	exit function
+end if	
+	
+
+	dim z
+	z = CLng(zI)
+
+	Dim zF
+	zF = factorizeGem(z, 11)
+	zStr = "Factors for " & z & ":- " & zF 
+
+	Dim zC  ''clusterize letter count
+	if z > 999 then
+	zC = clusterize(z)
+	zCF = factorizeGem(zC,11)
+	zStrC = "<br>Digit grouping for " & z & ":- " & zC & ". Digit grouping result factors:- " & zCF
+	end if
+
+	resS = zStr & zStrC
+
+	if n=1 then
+		msgbox Replace(resS,"<br>",vbcrlf)
+	else
+		Document.getElementById("resultsdiv").innerHTML = resS
+	end if
+
+
+
+end function
+
+
+function plusMinus(sI)
+
+Dim pMA
+pMA = Split(sI,",",-1,1)
+Dim uB
+uB = UBound(pMA,1)
+for i=0 to uB
+
+
+next
+
+plusMinus = 1
+
+end function
+
+
+function clusterize(cI)
+
+dim cS
+cS = CStr(cI)
+dim cL
+cL = Len(cS)
+
+dim chunkS
+dim chunkI,chunkIP
+chunks = cS
+
+
+if cL > 3 then 
+	Do 
+		if Len(chunkS) > 3 then
+			chunkI = Clng(Right(chunkS,3))
+			chunkIP = chunkIP + chunkI
+			chunkS = Left(chunkS, Len(chunkS)- 3)
+			else
+			chunkI = Clng(chunkS)
+			chunkIP = chunkIP + chunkI
+			Exit Do
+		end if
+	loop
+	else
+		chunkI = Clng(chunkS)
+		chunkIP = chunkIP + chunkI	
+end if
+
+
+clusterize = chunkIP
+
+end function
+
+
+
+function doClear(r)
+
+Document.enterScrip.reset
+
+end function
+
+
+function doCipher(c,t)
+
+t = Trim(t)
+sL = len(t)
+'determine which cipher to use
+cpH = c   'was c-1 but input value changed to 1
+
+'code for cipher traansform here  need to replace a letters ascii value with its ascii cipher value. 2nd value of array is atbash transformation
+'iterate through the string see if letter is in hb array(o,x) then replace with hb(1,x) where x is ascii cipher value
+
+''msgbox "doing cipher"
+
+Dim hb(78, 3) 
+
+hb(0, 0) = 1488  'aleph
+hb(0, 1) = 1514
+hb(1, 0) = 1489  'beth
+hb(1, 1) = 1513
+hb(2, 0) = 1490   '''''gimel
+hb(2, 1) = 1512
+hb(3, 0) = 1491    '''''dalet
+hb(3, 1) = 1511
+hb(4, 0) = 1492  'heh
+hb(4, 1) = 1510
+hb(5, 0) = 1493  '''''vav
+hb(5, 1) = 1508
+hb(6, 0) = 1494   '''''zayin
+hb(6, 1) = 1506
+hb(7, 0) = 1495   '''''chet
+hb(7, 1) = 1505
+hb(8, 0) = 1496   '''''tet
+hb(8, 1) = 1504
+hb(9, 0) = 1497  'yod
+hb(9, 1) = 1502
+hb(10, 0) = 1499  'kaph
+hb(10, 1) = 1500
+hb(11, 0) = 1500  'lamed
+hb(11, 1) = 1499
+hb(12, 0) = 1502   'mem
+hb(12, 1) = 1497
+hb(13, 0) = 1504   'nun
+hb(13, 1) = 1496
+hb(14, 0) = 1505   'samekh
+hb(14, 1) = 1495
+hb(15, 0) = 1506   'ayin
+hb(15, 1) = 1494
+hb(16, 0) = 1508   'peh
+hb(16, 1) = 1493
+hb(17, 0) = 1510   'tsaddi
+hb(17, 1) = 1492
+hb(18, 0) = 1511   'quph
+hb(18, 1) = 1491
+hb(19, 0) = 1512   'resh
+hb(19, 1) = 1490
+hb(20, 0) = 1513   'shin
+hb(20, 1) = 1489
+hb(21, 0) = 1514   'tav
+hb(21, 1) = 1488
+
+hb(22, 0) = 1498  '''''kaph sofit
+hb(22, 1) = 1500
+hb(23, 0) = 1501  ''''' mem sofit
+hb(23, 1) = 1497
+hb(24, 0) = 1503  '''''nun sofit
+hb(24, 1) = 1496
+hb(25, 0) = 1507  '''''peh sofit
+hb(25, 1) = 1493
+hb(26, 0) = 1509  '''''tsaddi sofit
+hb(26, 1) = 1492
+
+''greek starts here....
+
+hb(27, 0) = 945
+hb(27, 1) = 1
+hb(28, 0) = 946 'assumed  beta
+hb(28, 1) = 2
+hb(29, 0) = 947   '''gamma
+hb(29, 1) = 3
+hb(30, 0) = 948    '''assumed delta
+hb(30, 1) = 4
+hb(31, 0) = 949  ''epsilon
+hb(31, 1) = 5
+hb(32, 0) = 950   ''assumed  zeta - value jump here
+hb(32, 1) = 7
+hb(33, 0) = 951   ''eta
+hb(33, 1) = 8
+hb(34, 0) = 952   '''asssumed value for theta
+hb(34, 1) = 9
+hb(35, 0) = 953   '''iota
+hb(35, 1) = 10
+hb(36, 0) = 954  '''assumed value for kappa
+hb(36, 1) = 20
+hb(37, 0) = 955
+hb(37, 1) = 30
+hb(38, 0) = 956    'mu
+hb(38, 1) = 40
+hb(39, 0) = 957   ''nu
+hb(39, 1) = 50
+hb(40, 0) = 958   'assumed xi
+hb(40, 1) = 60
+hb(41, 0) = 959
+hb(41, 1) = 70
+hb(42, 0) = 960
+hb(42, 1) = 80
+hb(43, 0) = 961
+hb(43, 1) = 100
+hb(44, 0) = 962  '''this is sigma  small letter 
+hb(44, 1) = 200   ''''maybe should be 6 when at end of a word - see 987 & 986
+hb(45, 0) = 964   '''tau
+hb(45, 1) = 300
+hb(46, 0) = 965
+hb(46, 1) = 400
+hb(47, 0) = 966    '''phi
+hb(47, 1) = 500
+hb(48, 0) = 967   ''assumed  chi
+hb(48, 1) = 600
+hb(49, 0) = 968   ''assumed psi
+hb(49, 1) = 700
+hb(50, 0) = 969   '''omega
+hb(50, 1) = 800
+
+hb(51, 0) = 963  '''this is sigma  middle one
+hb(51, 1) = 200
+hb(52, 0) = 987  '''this is stigma 2nd final form
+hb(52, 1) = 6
+
+'''greek capitals
+
+hb(53, 0) = 913
+hb(53, 1) = 1
+hb(54, 0) = 914 'assumed  beta
+hb(54, 1) = 2
+hb(55, 0) = 915   '''gamma
+hb(55, 1) = 3
+hb(56, 0) = 916    '''assumed delta
+hb(56, 1) = 4
+hb(57, 0) = 917  ''epsilon
+hb(57, 1) = 5
+hb(58, 0) = 918   ''assumed  zeta - value jump here
+hb(58, 1) = 7
+hb(59, 0) = 919   ''eta
+hb(59, 1) = 8
+hb(60, 0) = 920   '''asssumed value for theta
+hb(60, 1) = 9
+hb(61, 0) = 921   '''iota
+hb(61, 1) = 10
+hb(62, 0) = 922  '''assumed value for kappa
+hb(62, 1) = 20
+hb(63, 0) = 923
+hb(63, 1) = 30
+hb(64, 0) = 924    'mu
+hb(64, 1) = 40
+hb(65, 0) = 925   ''nu
+hb(65, 1) = 50
+hb(66, 0) = 926   'assumed xi
+hb(66, 1) = 60
+hb(67, 0) = 927
+hb(67, 1) = 70
+hb(68, 0) = 928
+hb(68, 1) = 80
+hb(69, 0) = 929    '''capital rho
+hb(69, 1) = 100
+hb(70, 0) = 931  '''this is capital  sigma - note that 930 is missing see below
+hb(70, 1) = 200
+hb(71, 0) = 932   '''tau
+hb(71, 1) = 300
+hb(72, 0) = 933
+hb(72, 1) = 400
+hb(73, 0) = 934    '''phi
+hb(73, 1) = 500
+hb(74, 0) = 935   ''assumed  chi
+hb(74, 1) = 600
+hb(75, 0) = 936   ''assumed psi
+hb(75, 1) = 700
+hb(76, 0) = 937   '''omega
+hb(76, 1) = 800
+hb(77, 0) = 930  '''this is a capital - lunate sigma - dont ask me!!! 
+hb(77, 1) = 200
+hb(78, 0) = 986  '''this is the 2nd sigma first final form   
+hb(78, 1) = 6
+
+
+uBN = 0
+uBN = UBound(hb,1)
+sP = 0
+sC = 0
+sT = 0
+'Dim hbTrans(78,2)
+newT = ""
+
+'For i = 1 To sl
+   
+    't =  replace(t,ChrW(hb(n,0)),ChrW(hb(n,1)))
+      
+'next
+
+For i = 1 To sL
+    sT =0
+    sP = Mid(t, i, 1)
+    sC = AscW(sP)
+        For n = 0 To uBN
+           If hb(n, 0) = sC Then
+               newT = newT & ChrW(hb(n,cpH))
+               sT=1                           
+              Exit For
+           End If
+        Next 
+        If sT = 0 then
+            newT = newT & sP
+        end if
+
+next
+
+''msgbox(newT)
+
+
+
+doCipher =  newT
+
+end function
+
+
+
+function docalc(z)
+
+dim resS 
+
+Dim sT,rT,cT,gT
+''note the length value to count a collection of elements
+
+For i = 0 to Document.rFmt.length -1 
+  If Document.rFmt(i).Name = "publishR" Then
+    If Document.rFmt(i).Checked Then
+       sT = Document.rFmt(i).Value      
+        Exit For
+	End if
+  End if
+Next
+
+For i = 0 to Document.fDir.length -1 
+  If Document.fDir(i).Name = "rDir" Then
+    If Document.fDir(i).Checked Then
+       rT = Document.fDir(i).Value      
+        Exit For
+	End if
+  End if
+Next
+
+cT = 0
+For i = 0 to Document.cCipher.length -1 
+  If Document.cCipher(i).Name = "cbCipher" Then
+    If Document.cCipher(i).Checked Then
+       cT = Document.cCipher(i).Value      
+        Exit For
+	End if
+  End if
+Next
+
+''msgbox cT
+
+
+gT = 0
+For i = 0 to Document.rGemtype.length -1 
+  If Document.rGemtype(i).Name = "rbGemtype" Then
+    If Document.rGemtype(i).Checked Then
+       gT = Document.rGemtype(i).Value      
+        Exit For
+	End if
+  End if
+Next
+
+
+
+
+
+
+
+Dim TheForm
+dim gS
+Set TheForm = Document.enterScrip 
+gS = TheForm.gem.Value
+
+
+if IsNumeric(gS) then 
+ doNumbers(2)
+ exit function
+end if
+
+
+'''test for selected text
+dim selTxt
+selTxt = document.selection.createRange().text
+'selTxt = getSel()
+if Len(selTxt) > 0 then
+	gS = selTxt
+end if
+
+'gS is the data string, sT is return text or html
+'now we find out if we are using cipher
+if cT=1 then
+    'MsgBox("allo atbash")
+    gS = doCipher(cT,gS)
+end if
+
+Dim gTyp   '''normal or ordinal gematria
+gTyp = 1
+'''If doing ordinal - this uses hb(i,3) as hb(i,2) is used for letter count (i think!) . 
+''So gTyp is set to gT + 1 . gT = 1 is is the normal radio button value. gT = 2 is the ordinal radio button value.
+
+If gT > 1 then    
+	gTyp = gT + 1
+end if
+
+  
+resS = hebGemEachWord(gS,sT,rT,gTyp)
+ 
+'Document.frames("resultshtm").innerText = resS
+'sColor = document.frames("resultshtm").document.body.style.backgroundColor; 
+ 
+'dIframe(resS)
+
+'exit function
+
+select case sT	
+	case 1	'Dim ctrL
+			'Set ctrL = Document.getElementById("results")
+			'ctrL.value = resS
+			'Document.frames("resultshtm").Document.innerHTML = resS		
+			Document.getElementById("resultsdiv").innerHTML = resS
+	case 2 document.write resS
+				
+end select
+
+  
+End function
+
+
+Function ReplaceTxt(strInp,patrn, replStr)
+  Dim regEx, str1					' Create variables.
+  str1 = strInp
+  Set regEx = New RegExp				' Create regular expression.
+  regEx.Pattern = patrn				' Set pattern.
+  regEx.IgnoreCase = True				' Make case insensitive.
+  ReplaceTxt = regEx.Replace(str1, replStr)	' Make replacement.
+End Function
+
+
+
+Function hebGemEachWord(cS,sT,rT,gTyp)
+
+Dim strClean, strNext, finalStr, newICheck, cSTemp 
+
+Dim gTY    '' normal or ordinal gematria
+gTY = 1
+gTY = gTyp
+
+
+strClean = Trim(cS) 
+
+'msgbox AscW(strClean) 
+
+'''in case the input is html
+if inStr(cS,"<br>") > 0 then
+	cSTemp = ReplaceTxt(cS,"<br>",vbcrlf)
+	cS = cSTemp
+end if
+if inStr(cS,"<p>") > 0 then
+	cSTemp = ReplaceTxt(cS,"<p>",vbcrlf)
+	cS = cSTemp
+end if
+if inStr(cS,"</p>") > 0 then
+	cSTemp = ReplaceTxt(cS,"</p>",vbcrlf)
+	cS = cSTemp
+end if 
+
+
+cSTemp= ""
+
+''''now add the ordinal array values
+
+Dim hb(78, 4) 
+
+hb(0, 0) = 1488  'aleph
+hb(0, 1) = 1
+hb(0, 3) = 1
+hb(1, 0) = 1489  'beth
+hb(1, 1) = 2
+hb(1, 3) = 2
+hb(2, 0) = 1490   '''''gimel
+hb(2, 1) = 3
+hb(2, 3) = 3
+hb(3, 0) = 1491    '''''dalet
+hb(3, 1) = 4
+hb(3, 3) = 4
+hb(4, 0) = 1492  'heh
+hb(4, 1) = 5
+hb(4, 3) = 5
+hb(5, 0) = 1493  '''''vav
+hb(5, 1) = 6
+hb(5, 3) = 6
+hb(6, 0) = 1494   '''''zayin
+hb(6, 1) = 7
+hb(6, 3) = 7
+hb(7, 0) = 1495   '''''chet
+hb(7, 1) = 8
+hb(7, 3) = 8
+hb(8, 0) = 1496   '''''tet
+hb(8, 1) = 9
+hb(8, 3) = 9
+hb(9, 0) = 1497  'yod
+hb(9, 1) = 10
+hb(9, 3) = 10
+hb(10, 0) = 1499  'kaph
+hb(10, 1) = 20
+hb(10, 3) = 11
+hb(11, 0) = 1500  'lamed
+hb(11, 1) = 30
+hb(11, 3) = 12
+hb(12, 0) = 1502   'mem
+hb(12, 1) = 40
+hb(12, 3) = 13
+hb(13, 0) = 1504   'nun
+hb(13, 1) = 50
+hb(13, 3) = 14
+hb(14, 0) = 1505   'samekh
+hb(14, 1) = 60
+hb(14, 3) = 15
+hb(15, 0) = 1506   'ayin
+hb(15, 1) = 70
+hb(15, 3) = 16
+hb(16, 0) = 1508   'peh
+hb(16, 1) = 80
+hb(16, 3) = 17
+hb(17, 0) = 1510   'tsaddi
+hb(17, 1) = 90
+hb(17, 3) = 18
+hb(18, 0) = 1511   'quph
+hb(18, 1) = 100
+hb(18, 3) = 19
+hb(19, 0) = 1512   'resh
+hb(19, 1) = 200
+hb(19, 3) = 20
+hb(20, 0) = 1513   'shin
+hb(20, 1) = 300
+hb(20, 3) = 21
+hb(21, 0) = 1514   'tav
+hb(21, 1) = 400
+hb(21, 3) = 22
+
+hb(22, 0) = 1498  '''''kaph sofit
+hb(22, 1) = 20
+hb(22, 3) = 11
+hb(23, 0) = 1501  ''''' mem sofit
+hb(23, 1) = 40
+hb(23, 3) = 13
+hb(24, 0) = 1503  '''''nun sofit
+hb(24, 1) = 50
+hb(24, 3) = 14
+hb(25, 0) = 1507  '''''peh sofit
+hb(25, 1) = 80
+hb(25, 3) = 17
+hb(26, 0) = 1509  '''''tsaddi sofit
+hb(26, 1) = 90
+hb(26, 3) = 18
+
+''greek starts here....
+
+hb(27, 0) = 945
+hb(27, 1) = 1
+hb(27, 3) = 1
+hb(28, 0) = 946 'assumed  beta
+hb(28, 1) = 2
+hb(28, 3) = 2
+hb(29, 0) = 947   '''gamma
+hb(29, 1) = 3
+hb(29, 3) = 3
+hb(30, 0) = 948    '''assumed delta
+hb(30, 1) = 4
+hb(30, 3) = 4
+hb(31, 0) = 949  ''epsilon
+hb(31, 1) = 5
+hb(31, 3) = 5
+hb(32, 0) = 950   ''assumed  zeta - value jump here
+hb(32, 1) = 7
+hb(32, 3) = 6
+hb(33, 0) = 951   ''eta
+hb(33, 1) = 8
+hb(33, 3) = 7
+hb(34, 0) = 952   '''asssumed value for theta
+hb(34, 1) = 9
+hb(34, 3) = 8
+hb(35, 0) = 953   '''iota
+hb(35, 1) = 10
+hb(35, 3) = 9
+hb(36, 0) = 954  '''assumed value for kappa
+hb(36, 1) = 20
+hb(36, 3) = 10
+hb(37, 0) = 955
+hb(37, 1) = 30
+hb(37, 3) = 11
+hb(38, 0) = 956    'mu
+hb(38, 1) = 40
+hb(38, 3) = 12
+hb(39, 0) = 957   ''nu
+hb(39, 1) = 50
+hb(39, 3) = 13
+hb(40, 0) = 958   'assumed xi
+hb(40, 1) = 60
+hb(40, 3) = 14
+hb(41, 0) = 959
+hb(41, 1) = 70
+hb(41, 3) = 15
+hb(42, 0) = 960
+hb(42, 1) = 80
+hb(42, 3) = 16
+hb(43, 0) = 961
+hb(43, 1) = 100
+hb(43, 3) = 17
+hb(44, 0) = 962  '''this is sigma small
+hb(44, 1) = 200    ''''maybe should be 6 when at end of a word
+hb(44, 3) = 18   
+hb(45, 0) = 964   '''tau
+hb(45, 1) = 300
+hb(45, 3) = 19
+hb(46, 0) = 965
+hb(46, 1) = 400
+hb(46, 3) = 20
+hb(47, 0) = 966    '''phi
+hb(47, 1) = 500
+hb(47, 3) = 21
+hb(48, 0) = 967   ''assumed  chi
+hb(48, 1) = 600
+hb(48, 3) = 22
+hb(49, 0) = 968   ''assumed psi
+hb(49, 1) = 700
+hb(49, 3) = 23
+hb(50, 0) = 969   '''omega
+hb(50, 1) = 800
+hb(50, 3) = 24
+
+hb(51, 0) = 963  '''this is sigma  middle one
+hb(51, 1) = 200
+hb(51, 3) = 18
+hb(52, 0) = 987  '''this is stigma 2nd final form
+hb(52, 1) = 6
+hb(52, 3) = 6     '''or maybe should be 18 as ordinal ?
+
+'''greek capitals
+
+hb(53, 0) = 913
+hb(53, 1) = 1
+hb(53, 3) = 1
+hb(54, 0) = 914 'assumed  beta
+hb(54, 1) = 2
+hb(54, 3) = 2
+hb(55, 0) = 915   '''gamma
+hb(55, 1) = 3
+hb(55, 3) = 3
+hb(56, 0) = 916    '''assumed delta
+hb(56, 1) = 4
+hb(56, 3) = 4
+hb(57, 0) = 917  ''epsilon
+hb(57, 1) = 5
+hb(57, 3) = 5
+hb(58, 0) = 918   ''assumed  zeta - value jump here
+hb(58, 1) = 7
+hb(58, 3) = 6
+hb(59, 0) = 919   ''eta
+hb(59, 1) = 8
+hb(59, 3) = 7
+hb(60, 0) = 920   '''asssumed value for theta
+hb(60, 1) = 9
+hb(60, 3) = 8
+hb(61, 0) = 921   '''iota
+hb(61, 1) = 10
+hb(61, 3) = 9
+hb(62, 0) = 922  '''assumed value for kappa
+hb(62, 1) = 20
+hb(62, 3) = 10
+hb(63, 0) = 923
+hb(63, 1) = 30
+hb(63, 3) = 11
+hb(64, 0) = 924    'mu
+hb(64, 1) = 40
+hb(64, 3) = 12
+hb(65, 0) = 925   ''nu
+hb(65, 1) = 50
+hb(65, 3) = 13
+hb(66, 0) = 926   'assumed xi
+hb(66, 1) = 60
+hb(66, 3) = 14
+hb(67, 0) = 927
+hb(67, 1) = 70
+hb(67, 3) = 15
+hb(68, 0) = 928
+hb(68, 1) = 80
+hb(68, 3) = 16
+hb(69, 0) = 929    '''capital rho
+hb(69, 1) = 100
+hb(69, 3) = 17
+hb(70, 0) = 931  '''this is capital  sigma - note that 930 is missing see below
+hb(70, 1) = 200
+hb(70, 3) = 18
+hb(71, 0) = 932   '''tau
+hb(71, 1) = 300
+hb(71, 3) = 19
+hb(72, 0) = 933
+hb(72, 1) = 400
+hb(72, 3) = 20
+hb(73, 0) = 934    '''phi
+hb(73, 1) = 500
+hb(73, 3) = 21
+hb(74, 0) = 935   ''assumed  chi
+hb(74, 1) = 600
+hb(74, 3) = 22
+hb(75, 0) = 936   ''assumed psi
+hb(75, 1) = 700
+hb(75, 3) = 23
+hb(76, 0) = 937   '''omega
+hb(76, 1) = 800
+hb(76, 3) = 24
+hb(77, 0) = 930  '''this is a capital - lunate sigma - dont ask me!!! 
+hb(77, 1) = 200
+hb(77, 3) = 18
+hb(78, 0) = 986  '''this is the 1st sigma final form   
+hb(78, 1) = 6
+hb(78, 3) = 6   '''or maybe should be 18 as ordinal ?
+
+
+
+
+
+
+
+
+
+
+
+Dim sL
+
+Dim xC 'As Long
+Dim sC 'As Long
+Dim sP 'As String
+Dim fC 'As Long
+
+Dim newS 'As String  vb string
+Dim newHS '' html string
+Dim newI 'As Long
+Dim newVT 'As Long
+Dim fGem 'As String
+Dim xLC 'As Long  'letter count
+Dim wC   '',wCV ''word count, verse word count
+
+Dim tDRS ''adds a space for left to right, not if rtl - BDO stuff
+if rT =1 then
+	tDRS = " "
+else
+	tDRS=""
+end if
+
+
+xC = 0
+sC = 0
+fC = 0
+newI=0
+newVT=0
+xLC=0
+wC = 0
+
+uBN = 0
+uBN = UBound(hb,1)
+
+
+ 
+strClean = strClean & chr(10) '''ensure get results for last verse
+sL = Len(strClean)
+
+'line 143
+
+dim eT   'determines non hebrew or greek text preceding hebrew or greek and adds some space
+eT=0
+
+
+'ReDim pM(sL)  ''the plus minus global array
+Dim pMS  ''the plus minus word string
+'' gTY normal or ordinal gematria, 1 0r 3
+
+
+For i = 1 To sL
+    sP = Mid(strClean, i, 1)
+    sC = AscW(sP)
+        For n = 0 To uBN
+           If hb(n, 0) = sC Then
+              fC = hb(n, gTY)
+              xC = xC + fC
+              xLC = xLC + 1
+              hb(n,2) = hb(n,2) + 1
+		''msgbox hb(n,2)              
+              Exit For
+           End If
+        Next 
+   
+ 
+' this is the space between english verse names and language entered
+' note 1470 to 1475 is hebrew dots and stuff
+
+if  (sC < 1488 or sC > 1514) and (sC<1470 or sC> 1475) and (sC < 945 or sC > 969) and sC <> 987 and sC <> 986 and sC <> 9 and sC <> 10 and sC <> 13 and sC <> 32 then
+	eT = eT + 1	
+	'msgbox sP & " / " & sC
+end if
+
+'msgbox sP & " / " & sC
+
+if (eT > 0 and (sC > 1487 And sC < 1515)) Or (eT > 0 and (sC > 944 And sC < 970)) Or (eT > 0 and (sC > 912 And sC < 938)) Or (eT > 0 and sC = 987) Or (eT > 0 and sC = 986)  then  ' this is where the space between non hebrew or greek verse names and language entered
+		newS =  newS & " " 
+		newHS = newHS &	" "
+		eT = 0				
+end if
+			
+
+ 
+     
+        If sC = 32 Or sP = Chr(10) Or sP = Chr(13) Or (sC > 1487 And sC < 1515) Or (sC > 944 And sC < 970)  Or (sC > 912 And sC < 939) Or (sC = 987)  Or (sC = 986) Then        
+						        
+                        
+					If sC = 32 Or i = sL Or sP = Chr(10) Or sP = Chr(13) Then
+                
+					
+                
+                        If sP = Chr(10) Or sP = Chr(13) Then
+								if newVT > 0 then   
+									fGem = factorizeGem(newVT, 10)
+									if newI > 0 then
+										newICheck = "(" & newI & ")"
+										wC = wC + 1
+										pMS = pMS & newI & ","
+										else
+										newHS = newHS & sP
+									end if									                                                      
+									'newS = newS & newICheck & vbCrLf & "(Verse total = " & newVT & ". Verse factors:- " & fGem & "" 
+									newHS = newHS & newICheck & "<br>" & "(Verse total = " & newVT & ". Verse factors:- " & fGem & "" 
+											if newVT >999 then '''clusterizing the verse totals
+												czVT = clusterize(newVT)
+												czCV = factorizeGem(czVT, 11)												
+												If Len(czCV) > 0 then													
+													czStr = ". Digit grouping result factors:- " & czCV
+												else
+													czStr = ""
+												end if												
+												newHS = newHS & "<br>Digit grouping for " & newVT & " = " & czVT & czStr 
+											end if
+									'newS = newS & ")" & vbCrLf & vbCrLf
+									newHS = newHS & ")<br><br>" 
+									newICheck = ""
+								end if
+								newI = 0
+								newVT = 0
+								fGem = ""
+                         Else
+								if newI > 0 then
+									newS = newS & "(" & newI & ")" & tDRS
+									newHS = newHS & "(" & newI & ")" & tDRS
+									wC = wC + 1
+									pMS = pMS & newI & ","
+									else
+									newHS = newHS & sP
+								end if
+								newI = 0
+								
+                        End If
+					Else
+						newI = newI + fC
+						newS = newS & sP
+						newHS = newHS & sP
+						newVT = newVT + fC
+					End If            
+                
+                
+					
+                
+            
+        Else    '  this is the english verse numbers
+									
+                    newS = newS & sP
+                    newHS = newHS & sP
+                    
+        End If
+     
+     fC = 0
+     
+	     
+     
+     
+Next 
+
+
+'hebGemEachWord = newS
+
+'''
+dim nH
+nH = Len(newHS)
+dim sZ
+sZ = 0
+dim sD
+dim sDX
+sDX = 0
+dim sCon
+dim eD  'text direction
+eD=0
+dim kN
+
+
+if rT = 2  then   'text direction   right to left
+
+	for i = 1 to nH
+
+		sD = Mid(newHS, i, 1)
+		sDX = AscW(sD)
+		if (sDX < 1488 or sDX > 1514) and (sDX <1470 or sDX > 1475) and (sDX < 945 or sDX > 969)  and (sDX < 913 or sDX > 937) and (sDX < 986 or sDX > 987) and sDX <> 9 and sDX <> 10 and sDX <> 13 and sDX <> 32 then
+			if sZ =0 then
+				sZ = sZ + 1  'english verse name letters
+				'if i = 1 then 'add some space for the first verse name
+				'	sCon = "  "
+				'end if			
+			sCon = sCon & "<BDO dir = ltr>"  'BDO reversing stuff remove a space and add a space
+			
+			end if			
+		end if
+	
+		'' check if hebrew or greek
+		if (sDX > 0 and (sDX > 1487 And sDX < 1515)) Or (sDX > 0 and (sDX > 944 And sDX < 970)) Or (sDX > 0 and (sDX > 912 And sDX < 938)) Or (sDX > 0 and (sDX > 985 And sDX < 988)) then  
+			if sZ = 1 then  '''previous letter was english
+				if sDX = 1475 then  ''hebrew end of verse colon
+				sCon = sCon & "</BDO>"
+				else
+				sCon = sCon & "</BDO>&nbsp;"
+				end if				
+			end if
+			sZ =0 			
+		end if
+	
+	sCon = sCon & sD
+	
+	next
+
+newHS = sCon
+
+end if
+
+
+
+
+Dim lGF
+lGF = factorizeGem(xC, 11)
+Dim letGF
+letGF = factorizeGem(xLC, 11) 
+Dim wCF
+wCF = factorizeGem(wC, 11)
+
+
+Dim cLC  ''clusterize letter count
+cLC = clusterize(xLC)
+Dim cLT  ''clusterize total letter gematria
+cLT = clusterize(xC)
+Dim cWC  ''clusterize word count
+cWC = clusterize(wC)
+
+dim cZF
+
+if xLC >999 then
+cZF = factorizeGem(cLC, 11)
+cLCS = "<br>Digit grouping for " & xLC & ":- " & cLC & ". Digit grouping result factors:- " & cZF 
+end if
+if xC >999 then
+cZF = factorizeGem(cLT, 11)
+cLTS = "<br>Digit grouping for " & xC & ":- " & cLT & ". Digit grouping result factors:- " & cZF 
+end if
+if wC > 999 then
+cZF = factorizeGem(cWC, 11)
+cWCS = "<br>Digit grouping for " & wC & ":- " & cWC & ". Digit grouping result factors:- " & cZF 
+end if
+
+if len(pMS) > 0  then
+	pMS = Left(pMS, Len(pMS)-1)
+	dim pMNS
+	pMNS = plusMinus(pMS)
+end if
+
+
+
+'newS = "Letter count:- " & xLC & vbcrlf & "Factors for " & xLC & ":- " & letGF & vbcrlf & "Total letter gematria:- " & xC & vbcrlf & "Factors for " & xC & ":- " & lGF & vbCrLf & vbCrLf & newS 
+
+
+
+
+select case rT
+	case 1 newHS = "<BDO dir=ltr>" & "Total Letter count:- " & xLC & "<br>Factors for " & xLC & ":- " & letGF & cLCS & "<br><br>Total letter gematria:- " & xC & "<br>Factors for " & xC & ":- " & lGF & cLTS & "<br><br>Total word count:- " & wC & "<br>Factors for " & wC & ":- " & wCF & cWCS & "<br><br>" & newHS & "</BDO>" 
+		   	
+	case 2 newHS = "Total Letter count:- " & xLC & "<br>Factors for " & xLC & ":- " & letGF & cLCS & "<br><br>Total letter gematria:- " & xC & "<br>Factors for " & xC & ":- " & lGF & cLTS & "<br><br>Total word count:- " & wC & "<br>Factors for " & wC & ":- " & wCF & cWCS & "<br><br>" & "<BDO dir=rtl>" & newHS & "</BDO>"  
+		   
+end select
+
+
+
+
+'hebGemEachWord = newHS
+
+
+'''Letter occurrance
+'''sort the letter occurrance array
+
+
+iMax = 0  'this is the letter with most occurances
+iMin = 0
+
+For n = 0 To uBN
+           If hb(n, 2) > 0  Then                 
+               hbSrt1 = hb(n, 2) 
+               
+					For y = 0 to uBN
+							 If hb(y,2) > hbSrt1 then
+								hb(y,3) = hb(y,3) + 1
+								ElseIf hb(y,2) < hbSrt1 then
+								hb(y,3) = hb(y,3) - 1								
+							End if
+							if hb(y,3) > iMax then
+									iMax = hb(y,3)									
+							end if
+							if hb(y,3) < iMin then
+									iMin = hb(y,3)									
+							end if
+							
+					Next
+                              
+           End If
+Next
+
+'msgbox iMax
+
+''display letter occurances
+
+For k = iMin To iMax
+	For iML = 0 to uBN
+		If hb(iML,2) > 0 then
+			If hb(iML,3) = k then
+				ltrocc = ltrocc & ChrW(hb(iML,0)) & " = " & hb(iML,2) & ". "
+			End If
+		End If
+	Next      
+Next 
+
+
+
+ltrocc = "<BDO dir=ltr>" & "Total Letter occurrances:- " & ltrocc & "</BDO>"
+hebGemEachWord = ltrocc & "<br><br>" & newHS
+
+
+
+
+'a case 3 for later use will output to word the newS string 
+'select case sT
+'	case 1 hebGemEachWord = newHS
+'	case 2 hebGemEachWord = newHS	
+'end select
+
+
+
+
+
+
+End Function
+
+
+
+
+
+
+
+Function factorizeGem(xF, fB)
+
+'''can probably lose fB now but might find it useful for just number factorizing later on
+
+Dim xI 
+xI=0
+
+xI = xF
+
+If xF = 0 And IsNull(fB) Then  'dont want dialog box popping up in the eachWord function calls
+   MsgBox "Zero gematria value - check selection is valid"
+   Exit Function
+End If
+
+If xF = 0 Then
+    Exit Function
+End If
+
+
+Dim xM()
+
+''dont want one as a factor so start at 2
+
+Dim zStr 
+Dim xL 
+xL = 10000
+
+
+
+
+'select case fB
+'	case 2 xL = 10000
+'			ReDim xM(10000)
+'	case 10 xL = 10000
+'			ReDim xM(10000)
+'	case 11 xL = 100000
+'			ReDim xM(100000)
+'end select
+
+xL = xI 'set the array bound to the input number
+
+
+
+ReDim xM(xL)
+
+
+
+'For n = 2 To xL
+'    If xI Mod n = 0 Then
+'        xM(n) = n
+'    End If
+'Next 
+
+
+'' this is a whole lot faster but ruins star calcs and prime caalcs etc
+dim cnt,xIS
+xIS = xI
+'xIS = Round(xI * 0.5)  'divide xI by 2 as that will be the largest factor result
+'xIS = xIS + 1 '' make sure we dont miss any results
+cnt = 1
+Do While cnt < xIS
+	If xI Mod cnt = 0 Then
+        xM(cnt) = cnt
+    End If
+    cnt = cnt +1
+Loop
+
+'add input number as last factor as mod only does smaller divisions than input number I think
+
+xM(cnt) = xI
+
+
+'''select case statement here please!!
+'If fB = 10 Then  ' limit the factor range for eachWord function call - maybe!
+'    xL = 10000
+'End If
+
+'If fB = 2 Then  ' the enter number test
+'    xL = 10000
+'End If
+
+''list the mod results by cycling thru array xM
+Dim xBL 
+xBL = False  ''check for prime number ie no factors see below
+
+Dim sChk
+Dim sGetStar,sStr, sStrOrder
+Dim aStar
+
+For k = 1 To xIS
+    If xM(k) > 0 And xM(k) <= xI Then
+        zStr = zStr & xM(k)
+        '''here we check for star numbers
+        sChk = xM(k)
+        sGetStar = amIaStar(sChk)
+        aStar = Split(sGetStar,",") 
+        'msgbox aStar(0)       
+        sStr = aStar(0)
+        sStrOrder = aStar(1)        
+        'sStrOrder = Right(sGetStar,Len(sGetStar)-2)        
+        If CLng(sStr) = 1 then
+            zStr = zStr & "(star " & sStrOrder & ")"
+        End If
+        zStr = zStr & ", "      
+        xBL = True
+    End If
+Next 
+
+If xBL = False Then
+	if xF = 1 then
+		zStr = xF & " is Unity  "
+	else
+		zStr = xF & " is a prime number  "
+    end if
+End If
+    
+
+''remove the xF value from the string zStr - more eficient than testing each time the loop iteration
+    
+Dim dStr 
+
+If IsNull(fB) Or fB < 10 Then
+    dStr = "Gematria total is " & xI & vbCrLf & "Factors are:- 1, " & zStr 
+    dStr = Left(dStr, Len(dStr) - 2)
+    'dStr = dStr '& ", " & xI
+Else
+    dStr = Left(zStr, Len(zStr) - 2)
+    'dStr = dStr '& ", " & xI
+End If
+
+'''add on final factor
+'dStr = dStr 
+''''or = 2 enter number  later
+If fB >= 10 Then
+    factorizeGem = dStr
+End If
+
+
+End Function
+
+
+Function amIaStar(s)
+
+''' 6n(n - 1) + 1.
+dim sCheck,sNumber,sRet
+
+For sCheck = 1 To s
+    
+    sNumber = 6 * sCheck
+    sNumber = sNumber * (sCheck -1)
+    sNumber = sNumber + 1     
+    
+    If s = sNumber then
+        sRet = "1," & cStr(sCheck)
+        'msgbox(sRet)
+        amIaStar = sRet        
+        Exit For
+    End If   
+        
+    If s < sNumber Then
+        amIaStar = "0,0"
+        Exit For
+    End If    
+    
+Next
+
+End Function
+
+
+Function amIaPrime(p)
+
+dim cP, xB
+cP = 2
+xB = 0
+
+Do While cP < p
+	If p Mod cP = 0 Then
+        xB = 1
+        Exit Do
+  End If
+    cP = cP +1
+Loop
+
+amIaPrime = xB
+
+
+
+
+End Function
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+    
+<form method="POST" name="rFmt" id="rFmt">
+<input type="radio" name="publishR" value="1" checked=true> This page &nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="publishR" value="2"> Clean Sheet
+</form>  
+
+ 
+ 
+<form method="POST" name="fDir" id="tDir">
+<input type="radio" name="rDir" value="1" checked=true ID=rDir> Left to Right &nbsp;&nbsp;&nbsp;&nbsp;
+<input type="radio" name="rDir" value="2" ID=rDir> Right to Left
+</form>
+
+<form method="POST" name="rGemtype" id="rGemtype">
+<input type="radio" name="rbGemtype" value="1" ID="rbGemtype" checked=true> Normal
+<input type="radio" name="rbGemtype" value="2" ID="rbGemtype"> Ordinal
+</form>
+
+
+<form method="POST" name="cCipher" id="cCipher">
+<input type="checkbox" name="cbCipher" value="1" ID="cbCipher"> Atbash
+</form>
+
+ <p>
+
+  <input type="button" value="Calculate gematria" name="calc" id="calc" onclick="docalc(1)">
+  <input type="button" value="Clear" name="clear" id="clear" onclick="doClear(1)">
+  <input type="button" value="Numbers" name="numB" id=numB onclick="doNumbers(1)">
+  
+</p>
+
+
+
+<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="100%" id="AutoNumber1" height="254">
+  <tr>
+    <td width="50%" height="19">Paste/enter your Hebrew or Greek (or both together!) below:- <br>
+    Try highlighting a text portion (left click and drag) and then re-calculate.</td>
+    <td width="50%" height="19">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="50%" height="234" valign=top>
+    
+     <form method="POST" name="enterScrip">  
+   
+ 		<textarea rows="40" name="gem" id="gem" cols="50">
+ 		</textarea></p>
+ 
+ 	</form>     
+    
+    </td>
+    <td width="50%" height="234" valign=top>
+       <div id=resultsdiv name="resultsdiv" ></div>
+     	
+    </td>
+  </tr>
+</table>
+
+</body>
+
+</html>
