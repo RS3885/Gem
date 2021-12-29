@@ -1,8 +1,9 @@
 # Gem
-Gematria Calculator built in VBScript and HTML
+Gematria Calculator built in VBScript and HTML.
+You will need Windows 10 or above and the Microsoft Edge browser.
 
-You have to download this file to your local machine and run it from there.
-(It doesn't run from the internet zone as afar as I am aware).
+You have to download the gematria calculator file to your local machine and run it from there.
+(It doesn't run from the internet zone as far as I am aware).
 
 Then:-
 
