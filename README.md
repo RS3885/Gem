@@ -30,7 +30,7 @@ Choose IE 11 string
 
 Return to page, top far right page/rectangle item.
 
-Now, the fun begins. Just paste some hebrew (or greek) into the left panel and hit the calculate button. You can leave the english chapter and verse markings in the pasted text if it's there, no problem, the calculator will traverse the text and make sense of it all.
+Now, the fun begins. Just paste some hebrew (or greek) into the left panel and hit the calculate button. You can leave the english chapter and verse markings in the pasted text if it's there, no problem, the calculator will traverse the text and make sense of it all.  Even highlight text within the paste and calculate that. There's Standard, Ordinal and some other options, too.
 
 Remember, you can paste whole books of the bible into the calculator (not tested its limits on this but you can easily plug in the whole book of Daniel), its not just about individual words or verses.
 
