@@ -11,7 +11,7 @@ Open settings in Edge Browser,  choose the default browser option (edge://settin
 Then:- 
 "Let Internet Explorer open sites in Microsoft Edge" -  Choose Always(Recommended).
 "Allow sites to be reloaded in Internet Explorer mode" - Choose Allow
-"Internet Explorer mode pages" - Add the local page.
+"Internet Explorer mode pages" - Add the local page (where you have saved the file on your local machine).
 
 Now you can go to settings in Edge browser and scroll down to and choose  "Run in Internet Explorer mode". 
 
@@ -24,8 +24,8 @@ Run:-
 
 Select the Gematria Calculator. This opens the options screen for running IE.
 
-Choose the emulatation tab
-Choose IE 8
+Choose the emulatation tab, 
+Choose IE 8, 
 Choose IE 11 string 
 
 Return to page, top far right page/rectangle item
