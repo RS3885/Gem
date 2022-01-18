@@ -12,6 +12,7 @@ Then:-
 "Let Internet Explorer open sites in Microsoft Edge" -  Choose Always(Recommended).
 "Allow sites to be reloaded in Internet Explorer mode" - Choose Allow
 "Internet Explorer mode pages" - Add the local page (where you have saved the file on your local machine).
+(This setting only lasts for about 30 days so you will have to, every so often, go back to the the previous step "Open settings in Edge Browser" and follow through again).
 
 Now you can go to settings in Edge browser and scroll down to and choose  "Run in Internet Explorer mode". 
 
