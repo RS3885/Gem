@@ -28,4 +28,8 @@ Choose the emulatation tab,
 Choose IE 8, 
 Choose IE 11 string 
 
-Return to page, top far right page/rectangle item
+Return to page, top far right page/rectangle item.
+
+Now, the fun begins. Just paste some hebrew (or greek) into the left panel and hit the calculate button. You can leave the english chapter and verse markings in the pasted text if it's there, no problem, the calculator will traverse the text and make sense of it all.
+
+Good Luck.
